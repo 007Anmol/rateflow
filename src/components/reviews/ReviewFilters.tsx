@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { X, Filter, Star } from "lucide-react";
@@ -22,7 +21,7 @@ interface ReviewFiltersProps {
 interface FilterState {
   search: string;
   category: string;
-  rating: number[];
+  rating: number;
   sortBy: string;
   tags: string[];
 }
@@ -40,7 +39,7 @@ const ReviewFilters: React.FC<ReviewFiltersProps> = ({
   const [filters, setFilters] = React.useState<FilterState>({
     search: "",
     category: "all",
-    rating: [0],
+    rating: 0,
     sortBy: "newest",
     tags: [],
   });
@@ -66,7 +65,7 @@ const ReviewFilters: React.FC<ReviewFiltersProps> = ({
     const resetFilters = {
       search: "",
       category: "all",
-      rating: [0],
+      rating: 0,
       sortBy: "newest",
       tags: [],
     };
@@ -77,7 +76,7 @@ const ReviewFilters: React.FC<ReviewFiltersProps> = ({
   const hasActiveFilters = () => {
     return (
       filters.category !== "all" ||
-      filters.rating[0] > 0 ||
+      filters.rating > 0 ||
       filters.sortBy !== "newest" ||
       filters.tags.length > 0
     );
@@ -139,15 +138,15 @@ const ReviewFilters: React.FC<ReviewFiltersProps> = ({
             <label className="text-sm font-medium">Minimum Rating</label>
             <div className="flex items-center">
               <Star size={14} className="text-amber-400 fill-amber-400" />
-              <span className="text-sm ml-1">{filters.rating[0]}+</span>
+              <span className="text-sm ml-1">{filters.rating}+</span>
             </div>
           </div>
           <Slider
-            value={filters.rating}
+            value={[filters.rating]}
             min={0}
             max={5}
             step={1}
-            onValueChange={(value) => handleFilterChange("rating", value)}
+            onValueChange={(value) => handleFilterChange("rating", value[0])}
           />
         </div>
         

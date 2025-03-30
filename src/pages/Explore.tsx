@@ -15,7 +15,7 @@ const Explore = () => {
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     search: searchParams.get("q") || "",
     category: searchParams.get("category") || "all",
-    rating: searchParams.get("rating") ? [parseInt(searchParams.get("rating") || "0")] : [0],
+    rating: searchParams.get("rating") ? parseInt(searchParams.get("rating") || "0") : 0,
     sortBy: searchParams.get("sortBy") || "newest",
     tags: searchParams.get("tags") ? searchParams.get("tags")?.split(",") || [] : [],
   });
@@ -27,7 +27,7 @@ const Explore = () => {
     setFilterOptions({
       search: searchParams.get("q") || "",
       category: searchParams.get("category") || "all",
-      rating: searchParams.get("rating") ? [parseInt(searchParams.get("rating") || "0")] : [0],
+      rating: searchParams.get("rating") ? parseInt(searchParams.get("rating") || "0") : 0,
       sortBy: searchParams.get("sortBy") || "newest",
       tags: searchParams.get("tags") ? searchParams.get("tags")?.split(",") || [] : [],
     });
@@ -41,7 +41,7 @@ const Explore = () => {
     const results = filterReviews({
       search: filterOptions.search,
       category: filterOptions.category,
-      rating: filterOptions.rating?.[0],
+      rating: filterOptions.rating,
       sortBy: filterOptions.sortBy,
       tags: filterOptions.tags,
     });
@@ -52,7 +52,7 @@ const Explore = () => {
     setHasFilters(
       filterOptions.search !== "" ||
       filterOptions.category !== "all" ||
-      (filterOptions.rating && filterOptions.rating[0] > 0) ||
+      filterOptions.rating > 0 ||
       filterOptions.sortBy !== "newest" ||
       (filterOptions.tags && filterOptions.tags.length > 0)
     );
@@ -61,7 +61,7 @@ const Explore = () => {
     const newParams = new URLSearchParams();
     if (filterOptions.search) newParams.set("q", filterOptions.search);
     if (filterOptions.category && filterOptions.category !== "all") newParams.set("category", filterOptions.category);
-    if (filterOptions.rating && filterOptions.rating[0] > 0) newParams.set("rating", filterOptions.rating[0].toString());
+    if (filterOptions.rating > 0) newParams.set("rating", filterOptions.rating.toString());
     if (filterOptions.sortBy && filterOptions.sortBy !== "newest") newParams.set("sortBy", filterOptions.sortBy);
     if (filterOptions.tags && filterOptions.tags.length > 0) newParams.set("tags", filterOptions.tags.join(","));
     
@@ -82,7 +82,7 @@ const Explore = () => {
     setFilterOptions({
       search: "",
       category: "all",
-      rating: [0],
+      rating: 0,
       sortBy: "newest",
       tags: [],
     });
